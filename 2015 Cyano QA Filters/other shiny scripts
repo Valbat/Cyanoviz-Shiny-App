@@ -1,0 +1,384 @@
+
+"Detection limit" ={filter(.dat2015,chla_ugl > 0) %>% 
+    filter(.dat2015,phyco_ugl > 0.1)},
+"Dilution" ={filter(.dat2015,dilution == "1:1")},                      
+"Analysis Repeated" ={filter(.dat2015, analysis_rep == "Primary")},
+"Sample Analyzed outisde QAPP temp Requirements" = {(sample_temp_c > 20 & sample_temp_c < 24)}),
+
+  rv <- reactiveValues(
+  "Detection limit" ={filter(dat2015,chla_ugl > 0) %>% 
+      filter(dat2015,phyco_ugl > 0.1)},
+  "Dilution" ={filter(dat2015,dilution == "1:1")},                      
+  "Analysis Repeated" ={filter(dat2015, analysis_rep == "Primary")},
+  "Sample Analyzed outisde QAPP temp Requirements" = {filter(dat2015,sample_temp_c > 20 & sample_temp_c < 24)})
+  
+   p <-   ggplot(selectedData(),aes(x,y,color = cols))+       
+        
+               geom_point( pch = 20, 
+                           cex = 5)+
+         geom_smooth()
+         
+          p+labs(x="Sample Date",y=input$Data, color="State(s)")
+
+       if (input$individual_obs) {
+      rug(faithful$eruptions)
+    }
+   
+    if(rv$Detectionlimit !='None')
+     p <- p+aes(DetectionLimit=input$DetectionLimit,
+     main = " Samples taken within QA Detection Limit")
+          
+   if(rv$Dilution !='None')
+     p <- p+aes(Dilution=input$Dilution,
+    main="Samples taken with no Dilution")
+
+  if(rv$AnalysisRepeated !='None')  
+    p <- p+aes(AnalysisRepeated=input$AnalysisRepeated,
+   main="Samples that did not have a repeated analysis")
+
+  if(rv$SampleAnalyzedoutisdeQAPPtempRequirements !='None')
+    p <- p+aes(SampleAnalyzedoutisdeQAPPtempRequirements=input$SampleAnalyzedoutisdeQAPPtempRequirements,
+   main=" Samples analyzed within QAPP temp requirements")
+  
+ 
+ #######
+  select(dat2015,matches("13.97"))
+   
+?a tibble
+   
+  > select(dat2015,matches("13.97"))
+  # A tibble: 2,276 x 0                       
+#########################################
+##checkbox list of QA Filters
+fluidPage(
+  titlePanel("2015 New England Cyano Monitoring Quality Control Filters"),
+  
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+    
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+      
+      #Input:Select state
+      selectInput("State",
+                  label = "View a State",
+                  choices = unique(dat2015$state),
+                  selected = "VT",
+                  multiple = FALSE),
+      
+      
+      # Input: Select the QA filter ----
+      
+      br(),
+    
+    checkboxInput(inputId = "Detection_Limit",
+                  label = strong(" Samples taken within QA Detection Limit"),
+                  value = FALSE),
+  
+    
+    checkboxInput(inputId = "Dilution",
+                  label = strong("Samples taken with no Dilution"),
+                  value = FALSE),
+     
+    checkboxInput(inputId = "Analysis_Repeated",
+                  label = strong("Analysis not repeated"),
+                  value = FALSE),
+   
+     checkboxInput(inputId = "QA_Temp_Requirements",
+                  label = strong("Sample Analyzed within QAPP Temp Requirements"),
+                  value = FALSE)),
+  
+    
+   # Main panel for displaying outputs ----
+  mainPanel(
+    
+  # Output: Tabset w/ chlorophyll and pohycocyanin ----
+    tabsetPanel(
+      id ="Data",
+      type="tabs",
+        tabPanel("Chlorophyll", plotOutput("plot1"),value = dat2015$chla_ugl),
+        tabPanel("Phycocyanin",plotOutput("plot2"),value = dat2015$phyco_ugl)
+      )
+      )
+))
+
+fluidPage(
+  titlePanel("2015 New England Cyano Monitoring Quality Control Filters"),
+  
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+    
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+      
+      #Input:Select state
+      selectInput("State",
+                  label = "View a State",
+                  choices = unique(dat2015$state),
+                  selected = "VT",
+                  multiple = FALSE),
+      
+      
+      # Input: Select the QA filter ----
+      
+      br(),
+    
+    checkboxInput(inputId = "Detection_Limit",
+                  label = strong(" Samples taken within QA Detection Limit"),
+                  value = FALSE),
+  
+    
+    checkboxInput(inputId = "Dilution",
+                  label = strong("Samples taken with no Dilution"),
+                  value = FALSE),
+     
+    checkboxInput(inputId = "Analysis_Repeated",
+                  label = strong("Analysis not repeated"),
+                  value = FALSE),
+   
+     checkboxInput(inputId = "QA_Temp_Requirements",
+                  label = strong("Sample Analyzed within QAPP Temp Requirements"),
+                  value = FALSE)),
+  
+    
+   # Main panel for displaying outputs ----
+  mainPanel(
+    
+  # Output: Tabset w/ chlorophyll and pohycocyanin ----
+    tabsetPanel(
+      id ="Data",
+      type="tabs",
+        tabPanel("Chlorophyll", plotOutput("plot1"),value = dat2015$chla_ugl),
+        tabPanel("Phycocyanin",plotOutput("plot2"),value = dat2015$phyco_ugl)
+      )
+      )
+))
+
+fluidPage(
+  titlePanel("2015 New England Cyano Monitoring Quality Control Filters"),
+  
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+    
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+      
+      #Input:Select state
+      selectInput("State",
+                  label = "View a State",
+                  choices = unique(dat2015$state),
+                  selected = "VT",
+                  multiple = FALSE),
+      
+      
+      # Input: Select the QA filter ----
+      
+      br(),
+    
+    checkboxInput(inputId = "Detection_Limit",
+                  label = strong(" Samples taken within QA Detection Limit"),
+                  value = FALSE),
+  
+    
+    checkboxInput(inputId = "Dilution",
+                  label = strong("Samples taken with no Dilution"),
+                  value = FALSE),
+     
+    checkboxInput(inputId = "Analysis_Repeated",
+                  label = strong("Analysis not repeated"),
+                  value = FALSE),
+   
+     checkboxInput(inputId = "QA_Temp_Requirements",
+                  label = strong("Sample Analyzed within QAPP Temp Requirements"),
+                  value = FALSE)),
+  
+    
+   # Main panel for displaying outputs ----
+  mainPanel(
+    
+  # Output: Tabset w/ chlorophyll and pohycocyanin ----
+    tabsetPanel(
+      id ="Data",
+      type="tabs",
+        tabPanel("Chlorophyll", plotOutput("plot1"),value = dat2015$chla_ugl),
+        tabPanel("Phycocyanin",plotOutput("plot2"),value = dat2015$phyco_ugl)
+      )
+      )
+))
+
+fluidPage(
+  titlePanel("2015 New England Cyano Monitoring Quality Control Filters"),
+  
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
+    
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+      
+      #Input:Select state
+      selectInput("State",
+                  label = "View a State",
+                  choices = unique(dat2015$state),
+                  selected = "VT",
+                  multiple = FALSE),
+      
+      
+      # Input: Select the QA filter ----
+      
+      br(),
+    
+    checkboxInput(inputId = "Detection_Limit",
+                  label = strong(" Samples taken within QA Detection Limit"),
+                  value = FALSE),
+  
+    
+    checkboxInput(inputId = "Dilution",
+                  label = strong("Samples taken with no Dilution"),
+                  value = FALSE),
+     
+    checkboxInput(inputId = "Analysis_Repeated",
+                  label = strong("Analysis not repeated"),
+                  value = FALSE),
+   
+     checkboxInput(inputId = "QA_Temp_Requirements",
+                  label = strong("Sample Analyzed within QAPP Temp Requirements"),
+                  value = FALSE)),
+  
+    
+   # Main panel for displaying outputs ----
+  mainPanel(
+    
+  # Output: Tabset w/ chlorophyll and pohycocyanin ----
+    tabsetPanel(
+      id ="Data",
+      type="tabs",
+        tabPanel("Chlorophyll", plotOutput("plot1"),value = dat2015$chla_ugl),
+        tabPanel("Phycocyanin",plotOutput("plot2"),value = dat2015$phyco_ugl)
+      )
+      )
+))
+library(shiny)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
+
+dat2015 <- read_csv("may data_clean_2015.csv",guess_max = 2000) %>%
+  filter(complete.cases(data.frame(chla_ugl,phyco_ugl))) %>%
+  arrange(desc(chla_ugl), desc(phyco_ugl)) %>%
+  filter(fluorometer_type == "Beagle") %>%
+  filter(sample_method==("Intergrated Sampler"))
+
+      selectedData <- reactive({
+      xx <- dat2015 %>%
+        filter(state == input$State)
+      xx <- xx[,c("sample_date", input$Data, "state")]
+      names(xx) <- c("x", "y","cols")
+      xx})
+  
+    output$plot1 <- renderPlot({
+    
+      p <-   ggplot(selectedData(),aes(x,y,color=cols))+       
+        
+        geom_point( pch = 20, 
+                    cex = 5)
+      
+      p+labs(x="sample_date",y=input$Data, color="State(s)")
+      
+      
+      if(input$Detection_Limit){
+        p <- p+aes(input$Detection_Limit)= filter(.dat2015,chla_ugl > 0) %>% 
+          filter(.dat2015,phyco_ugl > 0.1)}
+      
+      if(input$Dilution){
+        p <- p+aes(input$Dilution)= filter(.dat2015,dilution == "1:1")
+                   main="Samples taken with no Dilution"}
+      
+      if(input$Analysis_Repeated) { 
+        p <- p+aes(input$Analysis_Repeated)=filter(.dat2015, analysis_rep == "Primary")
+                   main="Samples that did not have a repeated analysis"}
+      
+      if(input$QA_Temp_Requirements){
+        p <- p+aes(input$QA_Temp_Requirements)=filter(.dat2015,sample_temp_c > 20 & sample_temp_c)
+                   main="Samples analyzed within QAPP temp requirements"}
+
+   output$plot2 <- renderPlot({
+     p <-   ggplot(selectedData(),aes(x,y,color=cols))+       
+       
+       geom_point( pch = 20, 
+                   cex = 5)}
+    )})
+}
+   
+##############################
+    
+      if(input$Detection_Limit){
+        ggplot+aes(input$Detection_Limit)= filter(dat2015,chla_ugl > 0) %>% 
+        filter(dat2015,phyco_ugl > 0.1)}
+      
+      if(input$Dilution){
+        ggplot+aes(input$Dilution)= filter(dat2015,dilution == "1:1")
+        main="Samples taken with no Dilution"}
+      
+      if(input$Analysis_Repeated) { 
+        ggplot+aes(input$Analysis_Repeated)=filter(dat2015, analysis_rep == "Primary")
+                   main="Samples that did not have a repeated analysis"}
+      
+      if(input$QA_Temp_Requirements){
+        ggplot+aes(input$QA_Temp_Requirements)=filter(dat2015,sample_temp_c > 20 & sample_temp_c)
+                   main="Samples analyzed within QAPP temp requirements"}
+
+
+###########################
+ output$plot1 = renderPlot({
+    
+    p <-   ggplot(selectedData(),aes(x,y,color=cols))+       
+      
+      geom_point( pch = 20, 
+                  cex = 5)
+    
+    p+labs(x="sample_date",y=input$Data, color="State(s)")
+      })
+  
+ 
+   output$plot2 = renderPlot({
+     p <-   ggplot(selectedData(),aes(x,y,color=cols))+       
+       
+       geom_point( pch = 20, 
+                   cex = 5)
+     p+labs(x="sample_date",y=input$Data, color="State(s)")}
+   )}
+
+
+       
+##########################
+ rv <- reactiveValues(data = dat2015)
+    
+     observeEvent(input$Detection_Limit,{rv$data <- filter(selectedData(),dat2015$chla_ugl> 0) %>% 
+            filter(dat2015$phyco_ugl > 0.1)})
+     observeEvent(input$Dilution, {rv$data <- filter(selectedData(),dat2015$dilution =="1:1")})
+     observeEvent(input$Analysis_Repeated, {rv$data <- filter(selectedData(),dat2015$analysis_rep == "Primary")})
+     observeEvent(input$QA_Temp_Requirements,{rv$data <-filter(selectedData(),dat2015$sample_temp_c > 20 & sample_temp_c)})
+     
+    
+#########################
+  checkGroup <- switch(input$checkGroup,
+           Detection_Limit= {filter(dat2015,chla_ugl> 0 & dat2015,phyco_ugl > 0.1)},
+           Dilution={filter(dat2015,dilution =="1:1")},
+            Analysis_Repeated={filter(dat2015,analysis_rep == "Primary")},
+            QA_Temp_Requirements={filter(dat2015,sample_temp_c > 20 & sample_temp_c)})
+          
+    #####################
+    eventReactive(input$Detection_Limit,{filter(dat2015,dat2015$chla_ugl> 0) %>% 
+          filter(dat2015,dat2015$phyco_ugl > 0.1)})
+      eventReactive(input$Dilution, {filter(dat2015,dat2015$dilution =="1:1")})
+      eventReactive(input$Analysis_Repeated, {filter(dat2015,dat2015$analysis_rep == "Primary")})
+      eventReactive(input$QA_Temp_Requirements,{filter(dat2015,dat2015$sample_temp_c > 20 & sample_temp_c)}) 
+      
+
+############################
+ checkboxGroupInput("dataset", label=h5("Range of QA Filters"),
+            choices= list(" Samples taken within QA Detection Limit" = dat2015$chla_ugl& dat2015$phyco_ugl,
+                          "Samples taken with no Dilution" = dat2015$dilution,
+                          "Analysis not repeated" =  dat2015$analysis_rep,
+                          "Samples Analyzed within QAPP Temp Requirements" = dat2015$sample_temp_c)) 
